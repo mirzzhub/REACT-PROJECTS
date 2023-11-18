@@ -1,0 +1,64 @@
+                                DAY 1   CLASSWORK 
+
+
+
+import logo from './logo.svg';
+import './App.css';
+import PassMessage from './PassMessage';
+import FailMessage from './FailMessage';
+function App() {
+  const isPass =props.isPass;
+  if(isPass)
+  {
+    return <PassMessage />
+  }
+  return <FailMessage />
+} 
+export default App;
+
+
+import React from 'react'
+import App from './App'
+
+function PassMessage()
+{
+    return (
+        <div>
+            <h1 style={
+                {
+                    textAlign: 'center',
+                    color: 'green'
+
+                }
+            }>Congratulations.You have passed the test.</h1>
+        </div>
+    )
+}
+export default PassMessage
+
+
+
+
+-------------------------------------------------------
+
+RENDER
+
+import React from 'react'
+import PassMessage from './PassMessage';
+import FailMessage from './FailMessage';
+
+class App extends React.Component {
+  render()
+  {
+    return(
+      <PassMessage/>
+    )
+  }
+} 
+export default App;
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+            DAY 1 PRACTICE @ HOME
+
+
+
+import React from 'react';
+import PassMessage from './PassMessage';
+import FailMessage from './FailMessage';
+function App(props) {
+  const isPass =props.isPass;
+  if(isPass)
+  {
+    return <PassMessage />
+  }
+  return <FailMessage />
+} 
+export default App;
+
+import React from 'react'
+
+class FailMessage extends React.Component
+{
+    render()
+    {
+        return <h1>Happy Diwali</h1>
+    }
+}
+export default FailMessage
+import React from 'react'
+import App from './App'
+
+class PassMessage extends React.Component
+{
+    render()
+    {
+        return <h1>Hello World</h1>
+    }
+}
+export default PassMessage;
+
+
+-------------------------------------------------------
+
+
+import React from 'react'
+import App from './App'
+
+function PassMessage()
+{
+    return (
+        <div>
+            <h1>Hello World</h1>
+        </div>
+    )
+}
+export default PassMessage
