@@ -1,0 +1,104 @@
+                                                      DAY-6 PRACTISE @ HOME
+
+
+Program:
+
+Build a react web application for a fictional online store that sells various products. The store has different categories of products such as electronics, clothing, accessories, and home appliances. You want to provide a feature for users to filter the products based on their Tategories
+
+Use the Context API to manage the state of the product categories and make it available across multiple components in the application. Assume that the categories are obtained from an API endpoint and need to be fetched asynchronously. Also, assume that the application has multiple pages, each containing a different set of components related to the products and their categories.
+
+In addition to managing the state of the product categories, you also want to provide the ability for users to filter products based on their price ranges. Incorporate this feature into the existing Context API-based state management system?
+
+CODE:
+
+// AppContext.js
+import React, { createContext, useState, useEffect } from 'react';
+
+const AppContext = createContext();
+
+const AppProvider = ({ children }) => {
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 100 });
+
+  useEffect(() => {
+    // Simulate asynchronous fetching of categories from an API endpoint
+    const fetchCategories = async () => {
+      // Assuming the API returns an array of category objects
+      const categoriesData = await fetch('/api/categories').then((response) =>
+        response.json()
+      );
+
+      setCategories(categoriesData);
+    };
+
+    fetchCategories();
+  }, []); // Empty dependency array ensures the effect runs only once on mount
+
+  const updateSelectedCategory = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const updatePriceRange = (min, max) => {
+    setPriceRange({ min, max });
+  };
+
+  return (
+    <AppContext.Provider
+      value={{
+        categories,
+        selectedCategory,
+        priceRange,
+        updateSelectedCategory,
+        updatePriceRange,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};
+------------------------------------------
+
+export { AppProvider, AppContext };
+
+// ProductList.js
+import React, { useContext } from 'react';
+import { AppContext } from './AppContext';
+
+const ProductList = () => {
+  const { selectedCategory, priceRange } = useContext(AppContext);
+
+  // Fetch and display products based on selectedCategory and priceRange
+
+  return (
+    <div>
+      {/* Product list rendering based on selectedCategory and priceRange */}
+      <p>Selected Category: {selectedCategory}</p>
+      <p>
+        Price Range: ${priceRange.min} - ${priceRange.max}
+      </p>
+      {/* Render your product list here */}
+    </div>
+  );
+};
+
+export default ProductList;
+
+-----------------------------------------
+
+// App.js
+import React from 'react';
+import { AppProvider } from './AppContext';
+import ProductList from './ProductList';
+
+const App = () => {
+  return (
+    <AppProvider>
+      {/* Your different pages and components */}
+      <ProductList />
+      {/* Other components */}
+    </AppProvider>
+  );
+};
+
+export default App;

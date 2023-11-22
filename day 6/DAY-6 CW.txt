@@ -1,0 +1,63 @@
+                                                     DAY-6 CLASSWORK 
+
+Program:
+
+You are tasked with creating a sample webpage in React that displays a list of products. The products are stored in an array of objects that contain information such as the product name, price, and image URL.
+
+You need to create a component that displays this list of products, but you want to be able to reuse this component throughout the application with different lists of products. Use a Higher-Order Function (HOF) to achieve this
+
+
+CODE :
+
+import React from 'react';
+
+// Higher-Order Function to create a product list component
+const withProductList = (productData) => (WrappedComponent) => {
+  return class extends React.Component {
+    render() {
+      return <WrappedComponent products={productData} {...this.props} />;
+    }
+  };
+};
+
+// ProductList component that will be reused
+const ProductList = ({ products }) => {
+  return (
+    <div>
+      <h2>Product List</h2>
+      <ul>
+        {products.map((product, index) => (
+          <li key={index}>
+            <img src={product.imageURL} alt={product.name} />
+            <p>{product.name}</p>
+            <p>{product.price}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+// Example usage
+const productListData1 = [
+  { name: 'Product 1', price: '$19.99', imageURL: 'product1.jpg' },
+  { name: 'Product 2', price: '$29.99', imageURL: 'product2.jpg' },
+];
+
+const productListData2 = [
+  { name: 'Product A', price: '$15.99', imageURL: 'productA.jpg' },
+  { name: 'Product B', price: '$24.99', imageURL: 'productB.jpg' },
+];
+
+const ProductListWithProducts1 = withProductList(productListData1)(ProductList);
+const ProductListWithProducts2 = withProductList(productListData2)(ProductList);
+
+// Render the components
+const App = () => (
+  <div>
+    <ProductListWithProducts1 />
+    <ProductListWithProducts2 />
+  </div>
+);
+
+export default App;

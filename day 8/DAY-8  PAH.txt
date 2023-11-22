@@ -1,0 +1,122 @@
+                                                            DAY-8 
+                                                        PRACTISE @ HOME
+
+
+
+You are building a simple e-commerce website and you want to manage the user's cart using Redux. How would you use Redux and Hooks to manage the user's cart Implement a Redux store that manages the user's cart data. Use React Hooks to subscribe to the store and display the cart items on the Cart page. Use Redux actions and reducers to add, remove, or update items in the cart.
+
+CODE :
+
+1. INSTALLATION
+ 
+    npm install react react-redux redux
+
+2.ACTIONS.JS
+
+// actions.js
+export const addToCart = (item) => ({
+  type: 'ADD_TO_CART',
+  payload: item,
+});
+
+export const removeFromCart = (itemId) => ({
+  type: 'REMOVE_FROM_CART',
+  payload: itemId,
+});
+---------------------------------
+3.REDUCERS.JS
+
+// reducers.js
+const initialState = {
+  cartItems: [],
+};
+
+const cartReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADD_TO_CART':
+      return {
+        ...state,
+        cartItems: [...state.cartItems, action.payload],
+      };
+    case 'REMOVE_FROM_CART':
+      return {
+        ...state,
+        cartItems: state.cartItems.filter(item => item.id !== action.payload),
+      };
+    default:
+      return state;
+  }
+};
+
+export default cartReducer;
+
+-------------------------------------------
+
+4.STORE.JS
+
+// store.js
+import { createStore } from 'redux';
+import cartReducer from './reducers';
+
+const store = createStore(cartReducer);
+
+export default store;
+
+--------------------------------------
+
+5.CARTPAGE.JS
+
+// CartPage.js
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeFromCart } from './actions';
+
+const CartPage = () => {
+  const cartItems = useSelector(state => state.cartItems);
+  const dispatch = useDispatch();
+
+  const handleRemoveFromCart = (itemId) => {
+    dispatch(removeFromCart(itemId));
+  };
+
+  return (
+    <div>
+      <h2>Shopping Cart</h2>
+      <ul>
+        {cartItems.map(item => (
+          <li key={item.id}>
+            {item.name} - <button onClick={() => handleRemoveFromCart(item.id)}>Remove</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default CartPage;
+
+--------------------------------------------------
+
+6.APP.JS
+
+// App.js
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from './store';
+import CartPage from './CartPage';
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <div>
+        <h1>Your E-commerce App</h1>
+        {/* Other components */}
+        <CartPage />
+      </div>
+    </Provider>
+  );
+};
+
+export default App;
+
+--------------------------------------------------------

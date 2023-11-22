@@ -1,0 +1,35 @@
+                                                            DAY-8
+                                                         CLASSWORK
+
+Create a functional component App that has constant message = "Hello dear one, learning React...?".
+
+Using useEffect change the message to "Great.... This is time to learn about HOOKS" after setting timeout 2000.
+
+And, also add a console.log message to trace the useEffect calling.
+
+
+CODE:
+
+import React, { useEffect, useState } from 'react';
+
+const App = () => {
+  const [message, setMessage] = useState("Hello dear one, learning React...?");
+
+  useEffect(() => {
+    console.log('use effect hook called');
+
+    const timeoutId = setTimeout(() => {
+      setMessage("Great.... This is time to learn about HOOKS");
+    }, 2000);
+
+    return () => clearTimeout(timeoutId); // Cleanup to avoid potential memory leaks
+  }, []); // Empty dependency array ensures useEffect runs only once
+
+  return (
+    <div>
+      <p>{message}</p>
+    </div>
+  );
+};
+
+export default App;
